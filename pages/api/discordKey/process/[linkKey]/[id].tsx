@@ -29,7 +29,8 @@ export default async function handle(request: NextApiRequest, response: NextApiR
         });
         return;
     }
-    linked[uuid] = id;
+    // @ts-ignore
+    linked[id] = uuid;
     await Keyv.set("minecraft", linked);
     // @ts-ignore
     delete linkReq[linkKey];
