@@ -1,6 +1,6 @@
 import {NextApiRequest, NextApiResponse} from "next";
 
-import {Keyv} from "../../../handles/Keyv";
+import {Keyv} from "../../../../handles/Keyv";
 
 export default async function handler(request: NextApiRequest, response: NextApiResponse) {
     if (request.method !== "GET") {
