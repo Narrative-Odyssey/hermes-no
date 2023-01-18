@@ -4,7 +4,7 @@ import useSWR from "swr";
 import React, {useEffect, useState} from "react";
 import {signIn, useSession} from "next-auth/react";
 
-import StatusContainer from "../StatusContainer";
+import StatusContainer from "../../StatusContainer";
 
 function Message({props}: {props: {linkKey: string, id: string}}) {
     const {linkKey, id} = props;

@@ -1,4 +1,4 @@
-import StatusContainer from "./StatusContainer";
+import StatusContainer from "../StatusContainer";
 
 export default function Page() {
     return (
