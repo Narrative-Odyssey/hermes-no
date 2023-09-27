@@ -1,4 +1,3 @@
-import React from "react";
 import {NextApiRequest, NextApiResponse} from "next";
 
 import {Keyv} from "../../../../../handles/Keyv";
