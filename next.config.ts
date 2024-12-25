@@ -1,13 +1,8 @@
-/** @type {import('next').NextConfig} */
-let nextConfig;
-nextConfig = {
+import {NextConfig} from "next";
+
+let nextConfig: NextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   experimental: {
-    appDir: true
-  },
-  images: {
-    domains: ["cdn.discord.com", "cdn.discordapp.com"],
   },
   async headers() {
     return [
@@ -40,4 +35,4 @@ nextConfig = {
   }
 };
 
-module.exports = nextConfig
+export default nextConfig;

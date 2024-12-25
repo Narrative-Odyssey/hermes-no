@@ -1,6 +1,6 @@
 import React from "react";
 
-import StatusContainer from "./StatusContainer";
+import StatusContainer from "@/components/StatusContainer";
 
 export default function Page() {
     return (

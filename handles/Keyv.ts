@@ -1,4 +1,3 @@
-// @ts-ignore
 import KeyKeyvLib from "keyv";
 import KeyvLibMySQL from "@keyv/mysql";
 

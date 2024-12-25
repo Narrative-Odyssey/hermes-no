@@ -1,27 +1,38 @@
-"use client";
-
-import React, {useEffect} from "react";
-import {SessionProvider} from "next-auth/react";
-
-import {Spectral} from "@next/font/google";
+import React from "react";
+import {Metadata, Viewport} from "next";
+import localFont from "next/font/local";
 
 import "bootstrap/dist/css/bootstrap.css";
 
-const spectral = Spectral({subsets: ["latin"], weight: "400"});
+import BootstrapJS from "./BootstrapJS";
+
+const font = localFont({src: "../public/Monocraft-no-ligatures.ttf", weight: "300"});
+
+export const metadata: Metadata = {
+    metadataBase: new URL(process.env.NODE_ENV === "development" ?
+        "http://localhost:" + process.env.PORT :
+        "https://narrativeodyssey.uk"
+    ),
+};
+
+export const viewport: Viewport = {
+    width: "device-width",
+    initialScale: 1
+};
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
-    useEffect(() => {
-        const {Tooltip} = require("bootstrap");
-        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(tooltipTriggerEl => new Tooltip(tooltipTriggerEl));
-    }, []);
-
     return (
-        <SessionProvider>
-            <html lang="en">
-                <body className={"h-100 text-light bg-black " + spectral.className}>
-                    <main>{children}</main>
-                </body>
-            </html>
-        </SessionProvider>
+        <html lang="en" data-bs-theme="dark">
+            <BootstrapJS/>
+            <head>
+                <link rel="shortcut icon" href="/favicon.ico"/>
+                <meta name="msapplication-TileColor" content="#000000"/>
+                <meta name="theme-color" content="#ffffff"/>
+                <title>Narrative Odyssey</title>
+            </head>
+            <body className={"h-100 text-light bg-black " + font.className}>
+                <main>{children}</main>
+            </body>
+        </html>
     );
 }

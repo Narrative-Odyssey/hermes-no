@@ -1,48 +1,35 @@
-"use client";
+import React from "react";
 
-import useSWR from "swr";
-import React, {useEffect, useState} from "react";
-import {signIn, useSession} from "next-auth/react";
+import NoCode from "../NoCode";
 
-import StatusContainer from "../../StatusContainer";
+import {auth, signIn} from "@/auth";
+import {Keyv} from "@/handles/Keyv";
+import StatusContainer from "@/components/StatusContainer";
 
-function Message({props}: {props: {linkKey: string, id: string}}) {
-    const {linkKey, id} = props;
-    const [message, setMessage] = useState(<></>);
+export default async function Page(props: {params: Promise<{linkKey: string}>}) {
+    const session = await auth();
+    if (!session?.user?.id) {
+        try {
+            await signIn("discord", {redirect: false});
+        } catch(error) {
+            console.error(error)
+        }
+        return (<StatusContainer type="danger">Not authenticated.</StatusContainer>);
+    }
 
-    useSWR(`/api/discordKey/process/${linkKey}/${id}`, url => {
-        fetch(url, {method: "POST"}).then(y => y.json()).then((response: {className: string, text: string}) => {
-            const {className, text} = response;
-            setMessage(<div className={className}>{text}</div>);
-        })
-    });
+    const {linkKey} = await props.params;
+    const linkReq = await Keyv.get("minecraftLinkReq") || {};
+    const uuid = Object.keys(linkReq).find(key => linkReq[key] === linkKey);
+    if (!uuid) return (<NoCode/>);
 
-    return message;
-}
+    const linked = await Keyv.get("minecraft") || {};
+    if (linked[uuid]) return (<StatusContainer type="danger">Account is already linked.</StatusContainer>);
 
-export default function Page({params}: {params: {linkKey: string}}) {
-    const {linkKey} = params;
-    const {data, status} = useSession();
-    const [message, setMessage] = useState(<></>);
+    const id = session?.user?.id;
+    linked[id] = uuid;
+    await Keyv.set("minecraft", linked);
+    delete linkReq[linkKey];
+    await Keyv.set("minecraftLinkReq", linkReq);
 
-    useEffect(() => {
-        (async () => {
-            switch (status) {
-                case "loading":
-                    break;
-                case "unauthenticated": {
-                    await signIn("discord");
-                    break;
-                }
-                case "authenticated": {
-                    // @ts-ignore
-                    const id = data?.user?.id;
-                    setMessage(<Message props={{linkKey, id}} />);
-                    break;
-                }
-            }
-        })();
-    }, [status, data, linkKey]);
-
-    return (<StatusContainer>{message}</StatusContainer>);
+    return (<StatusContainer type="success">Account successfully linked!<br/>You may close this window.</StatusContainer>);
 }
