@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3001",
-    "build": "next build",
-    "start": "next start -p 3001",
+    "prod": "next build; next start -p 3001",
     "lint": "next lint",
-    "setup": "npm i; npm run build; npm run start"
+    "reinstall": "npm i"
   },
   "engines": {
     "node": "23.3.0",
@@ -23,8 +22,8 @@
     "bootstrap": "5.3.3",
     "keyv": "5.2.1",
     "eslint": "^8.57.1",
-    "eslint-config-next": "15.1.1-canary.19",
-    "next": "15.1.1-canary.19",
+    "eslint-config-next": "^15.2.0-canary.4",
+    "next": "^15.2.0-canary.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "next-auth": "5.0.0-beta.25"
