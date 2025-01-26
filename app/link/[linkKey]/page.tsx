@@ -1,21 +1,17 @@
 import React from "react";
 
 import NoCode from "../NoCode";
+import Discord from "./Discord";
 
-import {auth, signIn} from "@/auth";
+import {auth} from "@/auth";
+
 import {Keyv} from "@/handles/Keyv";
+
 import StatusContainer from "@/components/StatusContainer";
 
 export default async function Page(props: {params: Promise<{linkKey: string}>}) {
     const session = await auth();
-    if (!session?.user?.id) {
-        try {
-            await signIn("discord", {redirect: false});
-        } catch(error) {
-            console.error(error)
-        }
-        return (<StatusContainer type="danger">Not authenticated.</StatusContainer>);
-    }
+    if (!session?.user?.id) return (<Discord/>);
 
     const {linkKey} = await props.params;
     const linkReq = await Keyv.get("minecraftLinkReq") || {};

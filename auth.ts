@@ -4,5 +4,5 @@ import Discord from "@auth/core/providers/discord";
 
 export const {handlers, signIn, signOut, auth} = NextAuth({
     trustHost: true,
-    providers: [Discord({authorization: {params: {scope: "identity"}}})],
+    providers: [Discord({authorization: "https://discord.com/oauth2/authorize?scope=identify"})],
 });
