@@ -1,6 +1,7 @@
 import {NextConfig} from "next";
 
 let nextConfig: NextConfig = {
+  output: "standalone",
   reactStrictMode: true,
   experimental: {
   },
